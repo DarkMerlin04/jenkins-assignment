@@ -7,7 +7,7 @@ app.get('/', (req,res) => {
 })
 
 app.get('/getcode', (req,res)=> {
-    res.send("WE LOVE JENKINS")
+    res.send("BANGKOK THAILAND THAN SMILE")
 })
 
 app.get('/plus/:num1/:num2', (req,res) => {
