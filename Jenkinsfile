@@ -5,19 +5,27 @@ pipeline {
         nodejs "NodeJS"
     }
 
-    stages {
-        stage("Clear Docker Containers") {
-            agent{
-                label 'test && preprod'
+        stage("Clear Docker Containers and Images") {
+            agent {
+                label 'preprod'
             }
             steps {
                 script {
+                    // Stop and remove all running containers
                     def runningContainers = sh(script: 'docker ps -q | wc -l', returnStdout: true).trim().toInteger()
-                    
                     if (runningContainers > 0) {
                         sh 'docker stop $(docker ps -a -q)'
+                        sh 'docker rm $(docker ps -a -q)'
                     } else {
-                        echo "Nothing exist. Running container count: $runningContainers"
+                        echo "No running containers to stop."
+                    }
+        
+                    // Remove all Docker images
+                    def dockerImages = sh(script: 'docker images -q | wc -l', returnStdout: true).trim().toInteger()
+                    if (dockerImages > 0) {
+                        sh 'docker rmi -f $(docker images -q)'
+                    } else {
+                        echo "No Docker images to remove."
                     }
                 }
             }
