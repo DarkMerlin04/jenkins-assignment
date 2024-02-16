@@ -50,7 +50,7 @@ pipeline {
             steps {
                 echo 'Compose API UP'
                 sh 'pwd && ls -al'
-                sh 'docker-compose -f ./compose.dev.yaml up -d --build'
+                sh 'docker-compose -f ./compose.dev.yml up -d --build'
                 sh 'docker-compose ps'
                 sh 'docker ps'
             }
@@ -93,7 +93,7 @@ pipeline {
             }
             steps {
                 echo 'Cleaning'
-                sh 'docker-compose -f ./compose.dev.yaml down'
+                sh 'docker-compose -f ./compose.dev.yml down'
                 sh 'docker system prune -a -f'
             }
         }
