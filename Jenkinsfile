@@ -5,6 +5,7 @@ pipeline {
         nodejs "NodeJS"
     }
 
+    stages {
         stage("Clear Docker Containers and Images") {
             agent {
                 label 'preprod'
@@ -19,7 +20,7 @@ pipeline {
                     } else {
                         echo "No running containers to stop."
                     }
-        
+
                     // Remove all Docker images
                     def dockerImages = sh(script: 'docker images -q | wc -l', returnStdout: true).trim().toInteger()
                     if (dockerImages > 0) {
@@ -29,6 +30,7 @@ pipeline {
                     }
                 }
             }
+        }
 
         stage("Install Environment") {
             agent {
