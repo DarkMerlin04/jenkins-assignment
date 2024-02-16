@@ -7,7 +7,7 @@ app.get('/', (req,res) => {
 })
 
 app.get('/getcode', (req,res)=> {
-    res.send("64010718 Raweeroj Thokaeo (AJ)")
+    res.send("Congratulations!!!")
 })
 
 app.get('/plus/:num1/:num2', (req,res) => {
