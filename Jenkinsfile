@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage("Clear Docker Containers") {
             agent{
-                label 'test'
+                label 'test && preprod'
             }
             steps {
                 script {
