@@ -7,7 +7,7 @@ app.get('/', (req,res) => {
 })
 
 app.get('/getcode', (req,res)=> {
-    res.send("Congratulations!!!")
+    res.send("TIDFON!! MAIWAI!!!")
 })
 
 app.get('/plus/:num1/:num2', (req,res) => {
