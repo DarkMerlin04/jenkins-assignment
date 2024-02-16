@@ -29,7 +29,6 @@ pipeline {
                     }
                 }
             }
-        }
 
         stage("Install Environment") {
             agent {
