@@ -7,7 +7,7 @@ app.get('/', (req,res) => {
 })
 
 app.get('/getcode', (req,res)=> {
-    res.send("TimeOut!!!")
+    res.send("77777")
 })
 
 app.get('/plus/:num1/:num2', (req,res) => {
