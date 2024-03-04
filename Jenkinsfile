@@ -32,17 +32,6 @@ pipeline {
             }
         }
 
-        stage("Clean Everything in VM2") {
-            agent {
-                label 'test'
-            }
-            steps {
-                echo 'Cleaning'
-                sh 'docker-compose -f ./compose.dev.yml down'
-                sh 'docker system prune -a -f'
-            }
-        }
-
         stage("Install Environment") {
             agent {
                 label 'test'
@@ -104,6 +93,17 @@ pipeline {
                 sh "docker build -t registry.gitlab.com/ajdvdsf.aj/jenkins-assignment ."
                 sh "docker push registry.gitlab.com/ajdvdsf.aj/jenkins-assignment"
                 echo 'Build & Push Success!'
+            }
+        }
+
+        stage("Clean Everything in VM2") {
+            agent {
+                label 'test'
+            }
+            steps {
+                echo 'Cleaning'
+                sh 'docker-compose -f ./compose.dev.yml down'
+                sh 'docker system prune -a -f'
             }
         }
 
