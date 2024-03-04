@@ -3,11 +3,11 @@ const app = express()
 const port = 5000
 
 app.get('/', (req,res) => {
-    res.send("Hello World!");
+    res.send("Hello World! test 1234");
 })
 
 app.get('/getcode', (req,res)=> {
-    res.send("This is /getcode routes.")
+    res.send("77777")
 })
 
 app.get('/plus/:num1/:num2', (req,res) => {

@@ -6,20 +6,40 @@ pipeline {
     }
 
     stages {
-        stage("Clear Docker Containers") {
-            agent{
-                label 'test'
+        stage("Clear Docker Containers and Images in VM3") {
+            agent {
+                label 'preprod'
             }
             steps {
                 script {
+                    // Stop and remove all running containers
                     def runningContainers = sh(script: 'docker ps -q | wc -l', returnStdout: true).trim().toInteger()
-                    
                     if (runningContainers > 0) {
                         sh 'docker stop $(docker ps -a -q)'
+                        sh 'docker rm $(docker ps -a -q)'
                     } else {
-                        echo "Nothing exist. Running container count: $runningContainers"
+                        echo "No running containers to stop."
+                    }
+
+                    // Remove all Docker images
+                    def dockerImages = sh(script: 'docker images -q | wc -l', returnStdout: true).trim().toInteger()
+                    if (dockerImages > 0) {
+                        sh 'docker rmi -f $(docker images -q)'
+                    } else {
+                        echo "No Docker images to remove."
                     }
                 }
+            }
+        }
+
+        stage("Clean Everything in VM2") {
+            agent {
+                label 'test'
+            }
+            steps {
+                echo 'Cleaning'
+                sh 'docker-compose -f ./compose.dev.yml down'
+                sh 'docker system prune -a -f'
             }
         }
 
@@ -84,17 +104,6 @@ pipeline {
                 sh "docker build -t registry.gitlab.com/ajdvdsf.aj/jenkins-assignment ."
                 sh "docker push registry.gitlab.com/ajdvdsf.aj/jenkins-assignment"
                 echo 'Build & Push Success!'
-            }
-        }
-
-        stage("Clean") {
-            agent {
-                label 'test'
-            }
-            steps {
-                echo 'Cleaning'
-                sh 'docker-compose -f ./compose.dev.yml down'
-                sh 'docker system prune -a -f'
             }
         }
 
