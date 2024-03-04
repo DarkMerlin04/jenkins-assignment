@@ -59,7 +59,7 @@ describe('GET /is_prime/:num1',() => {
 
     it('false_when_x_is_36', async () => {
         const responds = await request(app).get('/is_prime/36')
-        expect(responds.status).toBe(400)
+        expect(responds.status).toBe(200)
         expect(responds.text).toBe('false')
     })
 
