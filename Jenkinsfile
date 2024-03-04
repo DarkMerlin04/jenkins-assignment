@@ -6,7 +6,7 @@ pipeline {
     }
 
     stages {
-        stage("Clear Docker Containers and Images") {
+        stage("Clear Docker Containers and Images in VM3") {
             agent {
                 label 'preprod'
             }
@@ -29,6 +29,17 @@ pipeline {
                         echo "No Docker images to remove."
                     }
                 }
+            }
+        }
+
+        stage("Clean Everything in VM2") {
+            agent {
+                label 'test'
+            }
+            steps {
+                echo 'Cleaning'
+                sh 'docker-compose -f ./compose.dev.yml down'
+                sh 'docker system prune -a -f'
             }
         }
 
@@ -93,17 +104,6 @@ pipeline {
                 sh "docker build -t registry.gitlab.com/ajdvdsf.aj/jenkins-assignment ."
                 sh "docker push registry.gitlab.com/ajdvdsf.aj/jenkins-assignment"
                 echo 'Build & Push Success!'
-            }
-        }
-
-        stage("Clean") {
-            agent {
-                label 'test'
-            }
-            steps {
-                echo 'Cleaning'
-                sh 'docker-compose -f ./compose.dev.yml down'
-                sh 'docker system prune -a -f'
             }
         }
 
